@@ -41,7 +41,7 @@
 
                 else if (cari_Stand.IsAvailable)
                 {
-                    Console.Write("\nInput jumlah hari sewa");
+                    Console.Write("\nInput jumlah hari sewa: ");
                     int hari = int.Parse(Console.ReadLine());
 
                     double totalBiaya = cari_Stand.HitungTotal(hari);
@@ -56,7 +56,7 @@
             }
             if (pilihan == "2")
             {
-                Console.WriteLine("\nDaftar Stand:");
+                Console.Write("\nInput nama Stand:");
                 string namaStand = Console.ReadLine();
 
                 var cari_Stand = data_Stand.FirstOrDefault(cr => cr.NamaStand.ToLower() == namaStand?.ToLower());
