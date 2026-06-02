@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-List<Stand> data_Stand = new List<Stand>();
+﻿List<Stand> data_Stand = new List<Stand>();
 
 {
     new StandOudoor("Stand Outdoor 1", 400000);
@@ -13,13 +11,14 @@ List<Stand> data_Stand = new List<Stand>();
 
 while (true)
 {
-    Console.WriteLine("---Moklet Expo Management Center---");
+    Console.WriteLine("===Moklet Expo Management Center===");
+    Console.WriteLine("\nDaftar Stand");
     foreach (var ds in data_Stand )
     {
         ds.TampilkanInfo();
     }
 
-    Console.WriteLine("Pilih menu: ");
+    
     Console.WriteLine("1. sewa\n2.kembali\n3. keluar");
     Console.Write("Pilih menu: ");
     string pilihan = Console.ReadLine();
@@ -29,7 +28,7 @@ while (true)
         Console.Write("\nInput nama Stand");
         string nama_Stand = Console.ReadLine();
 
-        var cari_Stand = data_Stand.FirstOrDefault(ck => string.Equals(ck.NamaStand, nama_Stand, StringComparison.OrdinalIgnoreCase));
+        var cari_Stand = data_Stand.FirstOrDefault(cr => string.Equals(cr.NamaStand, nama_Stand, StringComparison.OrdinalIgnoreCase));
 
         if (cari_Stand == null)
         {
@@ -56,7 +55,7 @@ while (true)
         Console.WriteLine("\nDaftar Stand:");
         string namaStand = Console.ReadLine();
 
-        var cari_Stand = data_Stand.FirstOrDefault(ck => string.Equals(ck.NamaStand, namaStand, StringComparison.OrdinalIgnoreCase));
+        var cari_Stand = data_Stand.FirstOrDefault(cr => string.Equals(cr.NamaStand, namaStand, StringComparison.OrdinalIgnoreCase));
 
 
         if (cari_Stand == null)
@@ -91,8 +90,6 @@ while (true)
     Console.WriteLine("Tekan ENTER untuk menutup Aplikasi....");
     Console.ReadLine();
 }
-
-
 
 
 class Stand
