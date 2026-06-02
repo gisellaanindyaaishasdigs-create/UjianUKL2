@@ -1,4 +1,6 @@
-﻿List<Stand> data_Stand = new List<Stand>();
+﻿using System.Runtime.CompilerServices;
+
+List<Stand> data_Stand = new List<Stand>();
 
 {
     new StandOudoor("Stand Outdoor 1", 400000);
@@ -11,83 +13,83 @@
 
 while (true)
 {
-    Console.WriteLine("Moklet Expo Management Center");
-    Console.WriteLine("Pilih menu: ");
+    Console.WriteLine("---Moklet Expo Management Center---");
     foreach (var ds in data_Stand )
     {
         ds.TampilkanInfo();
     }
 
+    Console.WriteLine("Pilih menu: ");
     Console.WriteLine("1. sewa\n2.kembali\n3. keluar");
     Console.Write("Pilih menu: ");
     string pilihan = Console.ReadLine();
 
-}
-
-if ("pilihan" == "1")
-{
-    Console.Write("\nInput nama Stand");
-    string nama_Stand = Console.ReadLine();
-
-    var cari_Stand = data_Stand.FirstOrDefault(ck => string.Equals(ck.NamaStand, nama_Stand, StringComparison.OrdinalIgnoreCase));
-
-    if (cari_Stand == null)
+    if (pilihan == "1")
     {
-        Console.WriteLine("Stand tidak di temukan");
+        Console.Write("\nInput nama Stand");
+        string nama_Stand = Console.ReadLine();
+
+        var cari_Stand = data_Stand.FirstOrDefault(ck => string.Equals(ck.NamaStand, nama_Stand, StringComparison.OrdinalIgnoreCase));
+
+        if (cari_Stand == null)
+        {
+            Console.WriteLine("Stand tidak di temukan");
+        }
+
+        else if (cari_Stand.IsAvailable)
+        {
+            Console.Write("\nInput jumlah hari sewa");
+            int hari = int.Parse(Console.ReadLine());
+
+            double totalBiaya = cari_Stand.HitungTotal(hari);
+
+            cari_Stand.UbahStatus();
+
+            Console.WriteLine($"Total pembayaran sewa: Rp {totalBiaya}");
+        }
+
+
+
     }
-
-    else if (cari_Stand.IsAvailable)
-    {
-        Console.Write("\nInput jumlah hari sewa");
-        int hari = int.Parse(Console.ReadLine());
-
-        double totalBiaya = cari_Stand.HitungTotal(hari);
-
-        cari_Stand.UbahStatus();
-
-        Console.WriteLine($"Total pembayaran sewa: Rp {totalBiaya}");
-    }
-
-    if ("pilihan" == "2")
+    if (pilihan == "2")
     {
         Console.WriteLine("\nDaftar Stand:");
         string namaStand = Console.ReadLine();
 
-        var cari_Stand = data_Stand.FirstOrDefault(ck => string.Equals(ck.NamaStand, nama_Stand, StringComparison.OrdinalIgnoreCase));
+        var cari_Stand = data_Stand.FirstOrDefault(ck => string.Equals(ck.NamaStand, namaStand, StringComparison.OrdinalIgnoreCase));
 
-        
-            if (cari_Stand == null)
-            {
-                Console.WriteLine("Stand tidak ditemukan");
-            }
 
-            else if (!cari_Stand.IsAvailable)
-            {
-                cari_Stand.UbahStatus();
-
-                Console.WriteLine("\nStand berhasil dikembalikan!");
-            }
-            else
-            {
-                Console.WriteLine("\nProses pengembalian tidak bisa dilakukan");
-            }
-        
-    }
-
-        else if ("pilihan" == "3")
+        if (cari_Stand == null)
         {
-            Console.WriteLine("Tekan ENTER untuk menutup Aplikasi");
-            Console.ReadLine();
-            break;
-           
+            Console.WriteLine("Stand tidak ditemukan");
         }
 
+        else if (!cari_Stand.IsAvailable)
+        {
+            cari_Stand.UbahStatus();
+
+            Console.WriteLine("\nStand berhasil dikembalikan!");
+        }
         else
         {
-            Console.WriteLine("\nPilihan invalid");
+            Console.WriteLine("\nProses pengembalian tidak bisa dilakukan");
         }
 
     }
+
+
+    else if (pilihan == "3")
+    {
+        Console.WriteLine("Terima Kasih");
+        break;
+    }
+
+    else
+    {
+        Console.WriteLine("\nPilihan invalid");
+    }
+    Console.WriteLine("Tekan ENTER untuk menutup Aplikasi....");
+    Console.ReadLine();
 }
 
 
@@ -98,6 +100,7 @@ class Stand
     protected string _namaStand;
     protected double _hargaSewaPerhari;
     protected bool _isAvailable;
+    
 
     public Stand(string namaStand, double hargaSewaPerhari)
     {
@@ -117,8 +120,16 @@ class Stand
         get { return _hargaSewaPerhari; }
         set
         {
-            if (value < 0) _hargaSewaPerhari = 0;
-            else _hargaSewaPerhari = value;
+            if (value < 0)
+            {
+                _hargaSewaPerhari = value;
+            }
+
+
+            else
+            {
+                Console.WriteLine("Harga sewa nya harus lebih dari nol");
+            }
 
         }
     }
@@ -133,8 +144,9 @@ class Stand
     {
         Console.WriteLine($"Nama Stand: {_namaStand}");
         Console.WriteLine($"Harga Sewa Perhari: {_hargaSewaPerhari}");
-        Console.WriteLine($"Ketersediaan: {(_isAvailable ? "Tersedia" : "Tidak Tersedia")}");
+        Console.WriteLine($"{_namaStand} | Rp {_hargaSewaPerhari} / hari | {(_isAvailable ? "Tersedia" : "Tidak Tersedia")}");
     }
+        
 
     public void UbahStatus()
     {
